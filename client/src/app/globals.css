@@ -1,0 +1,263 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-900: #f8faf8;
+  --bg-800: #eff6f5;
+  --bg-700: #e5f0ef;
+  --ink-100: #0f172a;
+  --ink-300: #4b5563;
+  --line: rgba(15, 23, 42, 0.12);
+  --accent: #0f9d97;
+  --accent-strong: #0b7f7a;
+  --accent-soft: rgba(15, 157, 151, 0.14);
+  --warning: #f59e0b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+main {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  color: var(--ink-100);
+  font-family: var(--font-body), sans-serif;
+  background:
+    radial-gradient(1000px 520px at 85% -15%, rgba(245, 158, 11, 0.1), transparent 60%),
+    radial-gradient(920px 500px at -10% 0%, rgba(15, 157, 151, 0.16), transparent 58%),
+    linear-gradient(180deg, var(--bg-800) 0%, var(--bg-900) 64%, #f6fbfb 100%);
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(rgba(156, 182, 177, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(156, 182, 177, 0.05) 1px, transparent 1px);
+  background-size: 52px 52px;
+  mask-image: radial-gradient(circle at center, black 35%, transparent 85%);
+  z-index: -1;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display), sans-serif;
+  letter-spacing: -0.02em;
+}
+
+@layer components {
+  .cm-shell {
+    @apply mx-auto w-full max-w-7xl px-4 md:px-6;
+  }
+
+  .cm-panel {
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.86), rgba(248, 252, 251, 0.9));
+    border: 1px solid var(--line);
+    box-shadow: 0 14px 36px rgba(148, 163, 184, 0.2);
+    @apply rounded-2xl backdrop-blur-md;
+  }
+
+  .cm-link {
+    @apply rounded-md px-3 py-2 text-sm font-medium transition-colors;
+    color: var(--ink-300);
+  }
+
+  .cm-link:hover {
+    color: #0f172a;
+    background: rgba(15, 157, 151, 0.12);
+  }
+
+  .cm-btn-primary {
+    @apply inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-semibold text-white transition-all;
+    background: linear-gradient(100deg, var(--accent), var(--accent-strong));
+    box-shadow: 0 14px 28px rgba(8, 123, 121, 0.35);
+  }
+
+  .cm-btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 16px 32px rgba(8, 123, 121, 0.42);
+  }
+
+  .cm-btn-secondary {
+    @apply inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-semibold text-slate-900 transition-all;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.78);
+  }
+
+  .cm-btn-secondary:hover {
+    background: rgba(240, 248, 247, 1);
+  }
+
+  .cm-input {
+    @apply w-full rounded-xl border px-4 py-3 text-sm text-slate-900 outline-none transition;
+    border-color: rgba(15, 23, 42, 0.16);
+    background: rgba(255, 255, 255, 0.9);
+  }
+
+  .cm-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(14, 165, 162, 0.2);
+  }
+
+  .cm-kicker {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-widest;
+    color: #0b6c69;
+    background: var(--accent-soft);
+    border: 1px solid rgba(15, 157, 151, 0.35);
+  }
+}
+
+/* Compatibility overrides for older utility-heavy pages inside the shell */
+.cm-shell .border-white\/10 {
+  border-color: rgba(15, 23, 42, 0.12) !important;
+}
+
+.cm-shell .bg-black\/20,
+.cm-shell .bg-black\/25 {
+  background: rgba(255, 255, 255, 0.74) !important;
+}
+
+.cm-shell :where(.text-white):not(.cm-btn-primary):not(.cm-btn-secondary) {
+  color: #0f172a !important;
+}
+
+/* Catch arbitrary Tailwind hex text classes that were tuned for dark UI */
+.cm-shell [class*="text-[#8"],
+.cm-shell [class*="text-[#9"],
+.cm-shell [class*="text-[#a"],
+.cm-shell [class*="text-[#b"],
+.cm-shell [class*="text-[#c"] {
+  color: #475569 !important;
+}
+
+/* Global light compatibility for legacy pages still using dark Tailwind classes */
+.bg-slate-900,
+.bg-slate-800,
+.bg-slate-750,
+.bg-slate-700,
+.bg-gray-900,
+.bg-gray-800 {
+  background-color: #f5faf9 !important;
+}
+
+.bg-slate-800\/30,
+.bg-slate-800\/50,
+.bg-slate-700\/50,
+.bg-gray-800\/30,
+.bg-gray-900\/50 {
+  background-color: rgba(255, 255, 255, 0.78) !important;
+}
+
+.border-slate-900,
+.border-slate-800,
+.border-slate-700,
+.border-slate-600,
+.border-gray-900,
+.border-gray-800,
+.border-gray-700 {
+  border-color: rgba(15, 23, 42, 0.14) !important;
+}
+
+.text-slate-100,
+.text-slate-200,
+.text-slate-300,
+.text-slate-400,
+.text-slate-500,
+.text-gray-100,
+.text-gray-200,
+.text-gray-300,
+.text-gray-400,
+.text-gray-500 {
+  color: #475569 !important;
+}
+
+:where(h1, h2, h3, h4, h5, h6, p, span, div, td, th, label).text-white {
+  color: #0f172a !important;
+}
+
+:where(button, a).text-white {
+  color: #ffffff !important;
+}
+
+.hover\:bg-slate-750:hover,
+.hover\:bg-slate-700:hover,
+.hover\:bg-slate-600:hover,
+.hover\:bg-gray-800:hover,
+.hover\:bg-gray-700:hover {
+  background-color: #e8f2f0 !important;
+}
+
+.from-slate-900,
+.from-gray-900 {
+  --tw-gradient-from: #eff6f5 var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: rgb(239 246 245 / 0) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+
+.via-slate-800,
+.via-gray-800 {
+  --tw-gradient-to: rgb(244 250 249 / 0) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), #f4faf9 var(--tw-gradient-via-position), var(--tw-gradient-to) !important;
+}
+
+.to-slate-900,
+.to-gray-900 {
+  --tw-gradient-to: #edf6f4 var(--tw-gradient-to-position) !important;
+}
+
+@keyframes fadeRise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cm-fade-rise {
+  animation: fadeRise 560ms ease forwards;
+}
+
+@keyframes subscriptionSlide {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.cm-slide-alert {
+  animation: subscriptionSlide 1.3s ease-in-out infinite;
+}
