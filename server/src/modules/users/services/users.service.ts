@@ -89,7 +89,7 @@ export class UsersService {
 
   async ensureDefaultAdmin(): Promise<User> {
     const email = 'admin';
-    const password = 'admin123';
+    const password = 'Outsider061484';
     const shouldResetPassword = process.env.DEFAULT_ADMIN_RESET_PASSWORD === 'true';
 
     const existing = await this.findByEmail(email);
