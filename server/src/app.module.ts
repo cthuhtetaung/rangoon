@@ -24,6 +24,9 @@ import { AiAssistantModule } from './modules/ai-assistant/ai-assistant.module';
 import { PlatformSettingsModule } from './modules/platform-settings/platform-settings.module';
 import { SubscriptionRequestsModule } from './modules/subscription-requests/subscription-requests.module';
 
+const databaseUrl = process.env.DATABASE_URL || '';
+const isProd = process.env.NODE_ENV === 'production';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -32,11 +35,18 @@ import { SubscriptionRequestsModule } from './modules/subscription-requests/subs
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.DB_HOST || 'localhost',
-      port: parseInt(process.env.DB_PORT || '5432'),
-      username: process.env.DB_USERNAME || 'postgres',
-      password: process.env.DB_PASSWORD || 'password',
-      database: process.env.DB_NAME || 'cafemanage',
+      ...(databaseUrl
+        ? {
+            url: databaseUrl,
+            ssl: isProd ? { rejectUnauthorized: false } : false,
+          }
+        : {
+            host: process.env.DB_HOST || 'localhost',
+            port: parseInt(process.env.DB_PORT || '5432'),
+            username: process.env.DB_USERNAME || 'postgres',
+            password: process.env.DB_PASSWORD || 'password',
+            database: process.env.DB_NAME || 'cafemanage',
+          }),
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       migrations: [__dirname + '/migrations/*{.ts,.js}'],
       synchronize:
