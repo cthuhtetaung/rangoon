@@ -1,0 +1,81 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: rangoon-db
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+    networks:
+      - rangoon-network
+
+  backend:
+    build:
+      context: ./server
+      dockerfile: dockerfile
+    container_name: rangoon-api
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 3000
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      JWT_SECRET: ${JWT_SECRET}
+      TYPEORM_SYNC: "false"
+      CORS_ORIGIN: ${CORS_ORIGIN}
+      DEFAULT_CURRENCY: MMK
+      DEFAULT_LANGUAGE: mm
+      TIMEZONE: Asia/Yangon
+    restart: unless-stopped
+    networks:
+      - rangoon-network
+
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: rangoon-web
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: /api
+      NEXT_PUBLIC_WS_URL: /api
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - rangoon-network
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: rangoon-proxy
+    depends_on:
+      - frontend
+      - backend
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.vps.conf:/etc/nginx/nginx.conf:ro
+    restart: unless-stopped
+    networks:
+      - rangoon-network
+
+volumes:
+  postgres_data:
+
+networks:
+  rangoon-network:
+    driver: bridge
