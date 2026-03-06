@@ -10,6 +10,13 @@ type GuideStep = {
   details: string[];
 };
 
+type GuideContact = {
+  title: string;
+  details: string;
+  phoneLabel: string;
+  phone: string;
+};
+
 export default function Home() {
   const { isAuthenticated } = useAuth();
   const { language } = useLanguage();
@@ -39,6 +46,13 @@ export default function Home() {
         'Complete checkout from Orders page.',
         'Record daily expenses in Expense module.',
         'Review Dashboard and Reports at day-end.',
+      ],
+      localTitle: 'Local Network Use (LAN Only)',
+      local: [
+        'This software runs in full local mode. Data stays on your main shop computer (local server).',
+        'Only devices on the same Wi-Fi can use the system (phone, tablet, POS terminal).',
+        'Connect every device to the same router, then open the LAN URL provided by the main computer.',
+        'If shop Wi-Fi is down, reconnect all devices to one fallback hotspot and use the same LAN URL again.',
       ],
       sections: [
         {
@@ -91,6 +105,12 @@ export default function Home() {
       ],
       ctaPrimary: 'Go to Sign in',
       ctaSecondary: 'Create account',
+      support: {
+        title: 'Need help?',
+        details: 'If setup or connection is not working, contact developer support.',
+        phoneLabel: 'Contact Developer',
+        phone: '09 952 177 104',
+      } as GuideContact,
     },
     my: {
       kicker: 'စတင်အသုံးပြုရန်',
@@ -105,6 +125,13 @@ export default function Home() {
         'Orders စာမျက်နှာမှ checkout ပြီးစီးအောင်လုပ်ပါ။',
         'နေ့စဉ်အသုံးစရိတ်ကို Expense ထဲမှာ မှတ်တမ်းတင်ပါ။',
         'နေ့ကုန်မှာ Dashboard နဲ့ Reports ပြန်စစ်ပါ။',
+      ],
+      localTitle: 'Local Network အသုံးပြုနည်း (LAN Only)',
+      local: [
+        'ဒီ software ကို full local mode ဖြင့်သုံးထားတာဖြစ်ပြီး data များကို ဆိုင်ရဲ့ main computer (local server) မှာပဲ သိမ်းဆည်းထားပါတယ်။',
+        'တစ်ခုတည်းသော Wi-Fi / LAN တူတဲ့ device များ (phone/tablet/POS terminal) ပေါ်မှသာ သုံးနိုင်ပါတယ်။',
+        'အသုံးပြုမည့် device အားလုံးကို router တစ်ခုတည်းချိတ်ပြီး main computer ပေးတဲ့ LAN link နဲ့ဝင်သုံးပါ။',
+        'ဆိုင် Wi-Fi ကျသွားရင် device အားလုံးကို hotspot တစ်ခုတည်းပြန်ချိတ်ပြီး အဲ့ဒီ LAN link နဲ့ပဲ ဆက်သုံးနိုင်ပါတယ်။',
       ],
       sections: [
         {
@@ -157,6 +184,12 @@ export default function Home() {
       ],
       ctaPrimary: 'အကောင့်ဝင်မည်',
       ctaSecondary: 'အကောင့်ဖွင့်မည်',
+      support: {
+        title: 'အကူအညီလိုပါက',
+        details: 'setup မရခြင်း၊ ချိတ်ဆက်မရခြင်း စသည့်ပြဿနာများအတွက် developer ကိုဆက်သွယ်နိုင်သည်။',
+        phoneLabel: 'Developer ဆက်သွယ်ရန်',
+        phone: '09 952 177 104',
+      } as GuideContact,
     },
   }[language];
 
@@ -187,6 +220,15 @@ export default function Home() {
           </article>
         </div>
 
+        <article className="mt-6 rounded-2xl border border-teal-200 bg-teal-50/60 p-5">
+          <h2 className="text-lg font-semibold text-slate-900">{t.localTitle}</h2>
+          <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-6 text-slate-700">
+            {t.local.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </article>
+
         <div className="mt-7 grid gap-4 md:grid-cols-2">
           {t.sections.map((section) => (
             <article key={section.title} className="rounded-2xl border border-slate-200 bg-white p-5">
@@ -204,8 +246,15 @@ export default function Home() {
           <a href="/login" className="cm-btn-primary">{t.ctaPrimary}</a>
           <a href="/signup" className="cm-btn-secondary">{t.ctaSecondary}</a>
         </div>
+
+        <article className="mt-6 rounded-2xl border border-slate-200 bg-white p-5">
+          <h3 className="text-base font-semibold text-slate-900">{t.support.title}</h3>
+          <p className="mt-2 text-sm leading-6 text-slate-600">{t.support.details}</p>
+          <p className="mt-2 text-sm font-semibold text-slate-800">
+            {t.support.phoneLabel}: <a className="text-teal-700" href="tel:09952177104">{t.support.phone}</a>
+          </p>
+        </article>
       </section>
     </main>
   );
 }
-
